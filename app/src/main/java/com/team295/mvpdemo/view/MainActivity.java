@@ -1,6 +1,8 @@
 package com.team295.mvpdemo.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -43,15 +45,19 @@ public class MainActivity extends AppCompatActivity implements GithubUserView {
     }
 
     @Override
-    public void allGithubUsers(GithubUserResponse response) {
-
-        String myName;
-        ArrayList<String> stringArrayList = new ArrayList<>();
-        for (GithubUser githubUser : response.getGithubUsers()) {
-            myName = githubUser.getUserName();
-            stringArrayList.add(myName);
-        }
-        initializeListView(stringArrayList);
+    public void allGithubUsers(MutableLiveData<GithubUserResponse> response) {
+        response.observe(this, new Observer<GithubUserResponse>() {
+            @Override
+            public void onChanged(GithubUserResponse githubUserResponse) {
+                String myName;
+                ArrayList<String> stringArrayList = new ArrayList<>();
+                for (GithubUser githubUser : githubUserResponse.getGithubUsers()) {
+                    myName = githubUser.getUserName();
+                    stringArrayList.add(myName);
+                }
+                initializeListView(stringArrayList);
+            }
+        });
     }
 
     @Override
