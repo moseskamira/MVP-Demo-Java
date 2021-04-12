@@ -1,4 +1,4 @@
-package com.team295.mvpdemo.contractor;
+package com.team295.mvpdemo.service.contractor;
 
 import com.team295.mvpdemo.model.GithubUserResponse;
 

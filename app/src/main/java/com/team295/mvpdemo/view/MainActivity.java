@@ -1,14 +1,15 @@
-package com.team295.mvpdemo;
+package com.team295.mvpdemo.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
 
+import com.team295.mvpdemo.R;
 import com.team295.mvpdemo.model.GithubUser;
 import com.team295.mvpdemo.model.GithubUserResponse;
 import com.team295.mvpdemo.presenter.GithubPresenter;
-import com.team295.mvpdemo.contractor.GithubUserView;
+import com.team295.mvpdemo.service.contractor.GithubUserView;
 
 public class MainActivity extends AppCompatActivity implements GithubUserView {
     private GithubPresenter githubPresenter;
@@ -18,12 +19,11 @@ public class MainActivity extends AppCompatActivity implements GithubUserView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         githubPresenter = new GithubPresenter();
-
-        loadUSers();
+        loadUsers();
 
     }
 
-    private void loadUSers() {
+    private void loadUsers() {
         githubPresenter.fetchGithubUsers(this);
     }
 
@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements GithubUserView {
         for (GithubUser githubUser : response.getGithubUsers()) {
             Log.d("USERS", githubUser.getUserName());
         }
-
     }
 
     @Override

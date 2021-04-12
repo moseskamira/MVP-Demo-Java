@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.team295.mvpdemo.model.GithubUserResponse;
 import com.team295.mvpdemo.service.ApiService;
 import com.team295.mvpdemo.service.RetrofitInstance;
-import com.team295.mvpdemo.contractor.GithubUserView;
+import com.team295.mvpdemo.service.contractor.GithubUserView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -17,11 +17,11 @@ public class GithubPresenter {
     public void fetchGithubUsers(final GithubUserView githubUserView) {
         apiService.fetchAllGithubUsers().enqueue(new Callback<GithubUserResponse>() {
             @Override
-            public void onResponse(@NonNull Call<GithubUserResponse> call, @NonNull Response<GithubUserResponse> response) {
+            public void onResponse(@NonNull Call<GithubUserResponse> call,
+                                   @NonNull Response<GithubUserResponse> response) {
                 if (response.body() != null) {
                    githubUserView.allGithubUsers(response.body());
                 }
-
             }
 
             @Override
