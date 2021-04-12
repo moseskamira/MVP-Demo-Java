@@ -1,6 +1,7 @@
 package com.team295.mvpdemo.presenter;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.team295.mvpdemo.model.GithubUser;
 import com.team295.mvpdemo.model.GithubUserResponse;
@@ -15,8 +16,11 @@ import retrofit2.Response;
 public class GithubPresenter {
     private ApiService apiService = RetrofitInstance.returnApiService();
     private static GithubPresenter githubPresenterInstance;
+    private static MutableLiveData<GithubUserResponse> githubUserResponseMutableLiveData;
 
     public static GithubPresenter returnPresenterInstance() {
+        githubUserResponseMutableLiveData = new MutableLiveData<>();
+
         if (githubPresenterInstance == null) {
             githubPresenterInstance = new GithubPresenter();
         }
@@ -29,7 +33,8 @@ public class GithubPresenter {
             public void onResponse(@NonNull Call<GithubUserResponse> call,
                                    @NonNull Response<GithubUserResponse> response) {
                 if (response.body() != null) {
-                   githubUserView.allGithubUsers(response.body());
+                    githubUserResponseMutableLiveData.postValue(response.body());
+                    githubUserView.allGithubUsers(githubUserResponseMutableLiveData);
                 }
             }
 
@@ -48,7 +53,6 @@ public class GithubPresenter {
                 if (response.body() != null) {
                     githubUserView.singleGithubUser(response.body());
                 }
-
             }
 
             @Override
