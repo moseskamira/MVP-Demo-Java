@@ -2,6 +2,7 @@ package com.team295.mvpdemo.presenter;
 
 import androidx.annotation.NonNull;
 
+import com.team295.mvpdemo.model.GithubUser;
 import com.team295.mvpdemo.model.GithubUserResponse;
 import com.team295.mvpdemo.service.ApiService;
 import com.team295.mvpdemo.service.RetrofitInstance;
@@ -12,7 +13,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class GithubPresenter {
-    ApiService apiService = RetrofitInstance.returnApiService();
+    private ApiService apiService = RetrofitInstance.returnApiService();
+    private static GithubPresenter githubPresenterInstance;
+
+    public static GithubPresenter returnPresenterInstance() {
+        if (githubPresenterInstance == null) {
+            githubPresenterInstance = new GithubPresenter();
+        }
+        return githubPresenterInstance;
+    }
 
     public void fetchGithubUsers(final GithubUserView githubUserView) {
         apiService.fetchAllGithubUsers().enqueue(new Callback<GithubUserResponse>() {
@@ -30,5 +39,22 @@ public class GithubPresenter {
             }
         });
 
+    }
+
+    public void fetchSingleUser(String username, final GithubUserView githubUserView) {
+        apiService.searchUser(username).enqueue(new Callback<GithubUser>() {
+            @Override
+            public void onResponse(@NonNull Call<GithubUser> call, @NonNull Response<GithubUser> response) {
+                if (response.body() != null) {
+                    githubUserView.singleGithubUser(response.body());
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<GithubUser> call, @NonNull Throwable t) {
+
+            }
+        });
     }
 }
