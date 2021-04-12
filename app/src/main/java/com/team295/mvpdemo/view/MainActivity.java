@@ -12,19 +12,22 @@ import com.team295.mvpdemo.presenter.GithubPresenter;
 import com.team295.mvpdemo.service.contractor.GithubUserView;
 
 public class MainActivity extends AppCompatActivity implements GithubUserView {
-    private GithubPresenter githubPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        githubPresenter = new GithubPresenter();
         loadUsers();
+        loadSingleUser();
 
     }
 
     private void loadUsers() {
-        githubPresenter.fetchGithubUsers(this);
+        GithubPresenter.returnPresenterInstance().fetchGithubUsers(this);
+    }
+
+    private void loadSingleUser() {
+        GithubPresenter.returnPresenterInstance().fetchSingleUser("kiptechie", this);
     }
 
 
@@ -36,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements GithubUserView {
     }
 
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    public void singleGithubUser(GithubUser githubUser) {
+        Log.d("SINGLEUSER", githubUser.toString());
 
     }
 }
