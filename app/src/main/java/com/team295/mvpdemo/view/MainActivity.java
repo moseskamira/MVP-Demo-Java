@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.team295.mvpdemo.R;
 import com.team295.mvpdemo.model.GithubUser;
@@ -11,12 +13,17 @@ import com.team295.mvpdemo.model.GithubUserResponse;
 import com.team295.mvpdemo.presenter.GithubPresenter;
 import com.team295.mvpdemo.service.contractor.GithubUserView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements GithubUserView {
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        listView = (ListView) findViewById(R.id.users_list);
+
         loadUsers();
         loadSingleUser();
 
@@ -30,12 +37,21 @@ public class MainActivity extends AppCompatActivity implements GithubUserView {
         GithubPresenter.returnPresenterInstance().fetchSingleUser("kiptechie", this);
     }
 
+    private void initializeListView(ArrayList<String> response) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item_view, response);
+        listView.setAdapter(adapter);
+    }
 
     @Override
     public void allGithubUsers(GithubUserResponse response) {
+
+        String myName;
+        ArrayList<String> stringArrayList = new ArrayList<>();
         for (GithubUser githubUser : response.getGithubUsers()) {
-            Log.d("USERS", githubUser.getUserName());
+            myName = githubUser.getUserName();
+            stringArrayList.add(myName);
         }
+        initializeListView(stringArrayList);
     }
 
     @Override
