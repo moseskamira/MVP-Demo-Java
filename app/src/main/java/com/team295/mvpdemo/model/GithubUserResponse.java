@@ -16,5 +16,4 @@ public class GithubUserResponse {
     public void setGithubUsers(ArrayList<GithubUser> githubUsers) {
         this.githubUsers = githubUsers;
     }
-
 }
