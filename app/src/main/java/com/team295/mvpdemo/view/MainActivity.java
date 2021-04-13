@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements GithubUserView {
 
     @Override
     public void singleGithubUser(GithubUser githubUser) {
+
         Log.d("SINGLEUSER", githubUser.toString());
 
     }
